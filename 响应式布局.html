@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+## 响应式布局
+###响应式布局的原则
+* 1 设置`viewport`视口 即浏览器中页面显示区域  
+```
+meta:vp+tab键  ——> 得到如下：
+<meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+```
+* 2 页面布局使用相对单位` rem ` 
+```
+假如: 设计稿640，设置单位是 x = 设计稿/100 + rem(一般都是100，便于计算)
+<script>
+        var desW = 640;
+        var winW = document.documentElement.clientWidth;
+        var desWfontSize = 100;
+        document.documentElement.style.fontSize = winW / desW * desWfontSize + 'px';
+</script>
+```
+* 3 应用媒体查询`@media`的使用  
+```
+ 1 、窗口大于1000px
+@media screen and (min-width: 1000px){
+    .nav {
+        相应代码··· 
+    }
+}
+ 2 、窗口大于768px
+@media screen and (max-width: 768px){
+    .nav  {
+       相应代码···
+    }
+   
+}
+·
+·
+·
+```
+* 4 图片自适应  
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<h2 id="">响应式布局</h2>
+
+<h3 id="">响应式布局的原则</h3>
+
+<ul>
+<li>1 设置<code>viewport</code>视口 即浏览器中页面显示区域  </li>
+</ul>
+
+<pre><code>meta:vp+tab键  ——&gt; 得到如下：
+&lt;meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"&gt;
+</code></pre>
+
+<ul>
+<li>2 页面布局使用相对单位<code>rem</code> </li>
+</ul>
+
+<pre><code>假如: 设计稿640，设置单位是 x = 设计稿/100 + rem(一般都是100，便于计算)
+&lt;script&gt;
+        var desW = 640;
+        var winW = document.documentElement.clientWidth;
+        var desWfontSize = 100;
+        document.documentElement.style.fontSize = winW / desW * desWfontSize + 'px';
+&lt;/script&gt;
+</code></pre>
+
+<ul>
+<li>3 应用媒体查询<code>@media</code>的使用  </li>
+</ul>
+
+<pre><code> 1 、窗口大于1000px
+@media screen and (min-width: 1000px){
+    .nav {
+        相应代码··· 
+    }
+}
+ 2 、窗口大于768px
+@media screen and (max-width: 768px){
+    .nav  {
+       相应代码···
+    }
+
+}
+·
+·
+·
+</code></pre>
+
+<ul>
+<li>4 图片自适应  </li>
+</ul>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "响应式布局.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
