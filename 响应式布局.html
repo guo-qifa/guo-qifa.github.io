@@ -30,17 +30,18 @@
 * 1 设置`viewport`视口 即浏览器中页面显示区域  
 ```
 meta:vp+tab键  ——> 得到如下：
-
+'<meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">'
 ```
 * 2 页面布局使用相对单位` rem ` 
 ```
 假如: 设计稿640，设置单位是 x = 设计稿/100 + rem(一般都是100，便于计算)
-<script>
+
         var desW = 640;
         var winW = document.documentElement.clientWidth;
         var desWfontSize = 100;
         document.documentElement.style.fontSize = winW / desW * desWfontSize + 'px';
-</script>
+
 ```
 * 3 应用媒体查询`@media`的使用  
 ```
@@ -76,6 +77,8 @@ meta:vp+tab键  ——> 得到如下：
 </ul>
 
 <pre><code>meta:vp+tab键  ——&gt; 得到如下：
+'&lt;meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"&gt;'
 </code></pre>
 
 <ul>
@@ -83,12 +86,11 @@ meta:vp+tab键  ——> 得到如下：
 </ul>
 
 <pre><code>假如: 设计稿640，设置单位是 x = 设计稿/100 + rem(一般都是100，便于计算)
-&lt;script&gt;
+
         var desW = 640;
         var winW = document.documentElement.clientWidth;
         var desWfontSize = 100;
         document.documentElement.style.fontSize = winW / desW * desWfontSize + 'px';
-&lt;/script&gt;
 </code></pre>
 
 <ul>
